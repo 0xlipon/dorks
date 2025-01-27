@@ -1,4 +1,4 @@
-<b><p align="center"> Cool Dorks for Hacking & Bug Bounty! </p></b>
+<b><p align="center"> Advanced Dorks for Hacking & Bug Bounty! </p></b>
 
 <p align="center">
     <a href="https://0xlipon.github.io/lipondork/" target="_blank">
@@ -7,8 +7,6 @@
         <span style="font-size: 20px; font-weight: bold; color: #333;">Lipon Dork</span>
     </a>
 </p>
-
-<b><p align="center"> Advanced Dorks for Hacking & Bug Bounty! </p></b>
 
 <p align="center">
     <a href="https://snowden-pc.github.io/google_dork_helper/" target="_blank">
