@@ -8,7 +8,6 @@
     </a>
 </p>
 
-<p align="center">Feel free to explore these resources to elevate your security testing practices.</p>
 <b><p align="center"> Advanced Dorks for Hacking & Bug Bounty! </p></b>
 
 <p align="center">
