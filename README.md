@@ -1,8 +1,8 @@
 <b><p align="center"> Advanced Dorks for Hacking & Bug Bounty! </p></b>
 
 <p align="center">
-    <a href="https://0xlipon.github.io/lipondork/" target="_blank">
-        <img src="https://img.icons8.com/ios-filled/50/000000/google-logo.png" alt="Google Dork Helper" style="width: 80px; height: auto; transition: transform 0.3s ease;"/>
+    <a href="https://0xlipon.github.io/dorks/" target="_blank">
+        <img src="https://img.icons8.com/fluency/80/000000/google-logo.png" alt="Google Dork Helper" style="width: 80px; height: auto; transition: transform 0.3s ease;"/>
         <br/>
         <span style="font-size: 20px; font-weight: bold; color: #333;">Lipon Dork</span>
     </a>
