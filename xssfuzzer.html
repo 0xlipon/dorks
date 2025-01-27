@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Fuzzer</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #00ff00;
+        }
+        h1, h2 {
+            color: #00ff00;
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-bottom: 2px solid #00ff00;
+            margin-bottom: 20px;
+            background-color: #333;
+        }
+        .header .left a {
+            color: #00ff00;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .header .right {
+            color: #00ff00;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #000;
+        }
+        th, td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #004400;
+            color: #00ff00;
+        }
+        tr:nth-child(even) {
+            background-color: #1a1a1a;
+        }
+        tr:hover {
+            background-color: #333;
+            transition: background-color 0.3s ease;
+        }
+        a {
+            color: #00ff00; /* Change link color to green */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .payload {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        .request-url {
+            color: #00ff00;
+            word-break: break-all;
+        }
+        .container {
+            margin-top: 10px;
+        }
+        .list-group-item {
+            background-color: #333;
+            color: #fff;
+        }
+        #urlInput {
+            width: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container p-0">
+        <h1 class="text-center">XSS Fuzzer</h1>
+        <form id="xssForm" class="form-inline">
+            <div class="form-group">
+                <input type="url" class="form-control" id="urlInput" placeholder="http://testphp.vulnweb.com/search.php?test=" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="scanButton" onclick="scannow()">Scan</button>
+        </form>
+        <div id="urlListlist"></div>
+    </div>
+    <script>
+    const displayContainer = document.querySelector('#urlListlist');
+    let urls = [];
+    let currentIndex = 0;
+
+    async function openNextUrl() {
+        if (currentIndex < urls.length) {
+            const url = urls[currentIndex];
+            const newTab = window.open(url, '_blank');
+            if (newTab) {
+                await waitForTabClose(newTab);
+                currentIndex++;
+                openNextUrl(); // Proceed to the next URL
+            } else {
+                console.log('Failed to open tab.');
+            }
+        } else {
+            console.log('All URLs have been opened.');
+        }
+    }
+
+    function waitForTabClose(tab) {
+        return new Promise((resolve) => {
+            const checkClosed = () => {
+                if (tab.closed) {
+                    resolve(); // Resolve the promise when the tab is closed
+                } else {
+                    requestAnimationFrame(checkClosed); // Check again on the next animation frame
+                }
+            };
+            checkClosed();
+        });
+    }
+
+    function scannow() {
+        const scanbtn = document.querySelector('#urlInput').value;
+        fetch('https://raw.githubusercontent.com/0xlipon/payloads/refs/heads/main/xss.txt')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then((data) => {
+                const lines = data.split('\n');
+                displayContainer.innerHTML = '';
+                urls = [];
+                currentIndex = 0;
+                lines.forEach(line => {
+                    const result = `${scanbtn}${line}`;
+                    const listItem = document.createElement('p');
+                    const link = document.createElement('a');
+                    link.href = result;
+                    link.target = '_blank';
+                    link.innerText = result;
+                    link.style.color = '#00ff00'; // Set link color to green
+                    listItem.appendChild(link);
+                    displayContainer.appendChild(listItem);
+                    urls.push(result);
+                });
+                openNextUrl(); // Start opening URLs
+            })
+            .catch((error) => {
+                displayContainer.innerText = 'There was an error fetching the data: ' + error.message;
+            });
+    }
+</script>
+</body>
+</html>
